@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="note.dao.NotesMapper">
+
+	<insert id="insert" parameterType="note.beans.Note">
+		INSERT INTO MERGE_REQUESTS (LOB, ITERATION, PROJECT, ARTIFACT, REVISIONS, ENVIRONMENTS, COMMENT) 
+		VALUES
+		<foreach collection="note.revision" item="element" index="index" separator=",">
+		(#{note.lineOfBusiness}, #{note.release}, #{note.project}, #{element.artifact}, #{element.versions}, #{note.environments}, #{note.comments})
+		</foreach>
+		<selectKey resultType="long" order="AFTER" keyProperty="returnedId">
+	        SELECT LAST_INSERT_ID() as returnedId
+	    </selectKey>
+	</insert>
+</mapper>
